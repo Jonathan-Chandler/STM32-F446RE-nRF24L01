@@ -1,28 +1,7 @@
-/*
- * This file is part of the libopencm3 project.
- *
- * Copyright (C) 2014 Karl Palsson <karlp@tweak.net.au>
- *
- * This library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
-
-// p57
 
 // RCC
 #define RCC_BASE      0x40023800
@@ -234,9 +213,6 @@
 #define RADIO_DYNPD       0x1C          // requires en_dpl and enaa_p0
 #define RADIO_FEATURE     0x1D
 
-// AHB1 = 0x4002 0000 -> 4002 FFFF
-// AHB1 = 0x4002 0000 -> 4002 FFFF
-
 void rcc_enable_gpio(uint32_t gpios);
 void rcc_enable_spi(void);
 
@@ -397,66 +373,6 @@ void spi_send(uint16_t data)
   *spi_data_register = data;
   enable_gpio(GPIO_A, GPIO_0);     // CSN
 }
-
-//void spi_send2(uint8_t command, uint8_t *data, size_t size)
-//{
-//  volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
-//  volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
-//  uint32_t recv_data;
-//
-//  disable_gpio(GPIO_A, GPIO_0);     // CSN
-//  disable_gpio(GPIO_A, GPIO_1);     // CSN
-//
-//
-//  // wait until transfer finished, send command
-//  while (!(*spi_status_register & SPI_SR_TXE));
-//
-//  // if rx not empty, read until rx buffer is empty
-//  while ((*spi_status_register & SPI_SR_RXNE))
-//  {
-//    recv_data = *spi_data_register;
-//  }
-//  *spi_data_register = command;
-//
-//  // wait until transfer finished, send data
-//  for (size_t currentByte = 0; currentByte < size; currentByte++)
-//  {
-//    // wait until tx empty
-//    while (!(*spi_status_register & SPI_SR_TXE));
-//
-//    // if rx not empty, read until rx buffer is empty
-//    while ((*spi_status_register & SPI_SR_RXNE))
-//    {
-//      recv_data = *spi_data_register;
-//    }
-//
-//    *spi_data_register = data[currentByte];
-//  }
-//
-//  // wait until tx empty
-//  while (!(*spi_status_register & SPI_SR_TXE));
-//
-//  // if rx not empty, read until rx buffer is empty
-//  while ((*spi_status_register & SPI_SR_RXNE))
-//  {
-//    //SPI_SR_BSY
-//    //1. Wait until RXNE=1 to receive the last data.
-//    //2. Wait until TXE=1 and then wait until BSY=0 before disabling the SPI.
-//    //3. Read received data.
-//    recv_data = *spi_data_register;
-//  }
-//
-//  while ((*spi_status_register & SPI_SR_BSY));
-//
-//  if (recv_data)
-//  {
-//  }
-//  enable_gpio(GPIO_A, GPIO_0);     // CSN
-//  enable_gpio(GPIO_A, GPIO_1);     // CSN
-//}
-//
-// 0000 1110 0000 1000
-// 0E 08
 
 void spi_send2(uint8_t *data, size_t size)
 {
@@ -632,27 +548,3 @@ void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size)
   enable_gpio(GPIO_A, GPIO_0);     // CSN
 }
 
-// void radio_read_register(uint8_t register_addr)
-// {
-//   volatile uint8_t data[2];
-// 
-//   // read config register
-//   data[0] = (RADIO_R_REGISTER | register_addr);
-//   data[1] = 0;
-//   spi_transmit(data, sizeof(data));
-// }
-
-// void radio_powerup(void)
-// {
-//   uint8_t data[2];
-//   // power on, ignore all interrupts
-//   data[0] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_RX_RT | RADIO_MASK_MAX_RT);
-//   
-//   data[1] = 0;
-//   spi_send2(data, sizeof(data));
-// }
-// 
-// uint8_t radio_get_erx_pipes(void)
-// {
-//   uint8_t result;
-// }
