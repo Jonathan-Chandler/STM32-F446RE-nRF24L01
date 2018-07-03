@@ -133,6 +133,8 @@
 #define RADIO_MASK_RX_DR  (1 << 6)      // 1=ignore IRQ; 0=rx dr on low interrupt IRQ
 #define RADIO_MASK_RX_RT  (1 << 5)      // 1=ignore IRQ; 0=tx ds on low interrupt IRQ
 #define RADIO_MASK_MAX_RT (1 << 4)      // 1=ignore IRQ; 0=reflect MAX_RT active on low
+#define RADIO_EN_CRC      (1 << 3)      // enable CRC; forced if EN_AA is high
+#define RADIO_CRCO        (1 << 2)      // CRC encoding scheme: 0=1 byte, 1=2 bytes
 #define RADIO_PWR_UP      (1 << 1)      // power on/off
 #define RADIO_PRIM_RX     (1 << 0)      // rx=1; tx=0
 
@@ -174,12 +176,13 @@
 #define RADIO_RF_PWR_MASK (0x03 << 1)   // RF TX mode Power: 00 = -18dbm; 01=-12dbm; 10=-6dbm; 11=0dbm;
 #define RADIO_RF_PWR_OFFS 1             // RF TX mode Power: 00 = -18dbm; 01=-12dbm; 10=-6dbm; 11=0dbm;
 
-#define RADIO_STATUS      0x07
-#define RADIO_RX_DR       (1 << 6)      // data ready on RX; write 1 to clear bit
-#define RADIO_TX_DS       (1 << 5)      // data sent on TX; write 1 to clear bit
-#define RADIO_MAX_RT      (1 << 4)      // maximum tx retransmits interrupt; write 1 to clear
-#define RADIO_RX_P_NO     (0x7 << 1)    // rx pipe ready for rx_fifo: 0-5=pipe #; 6=unused; 7=rx fifo empty
-#define RADIO_TX_FULL     (1 << 0)      // 1=tx full; 0=available locations in tx fifo
+#define RADIO_STATUS          0x07
+#define RADIO_RX_DR           (1 << 6)      // data ready on RX; write 1 to clear bit
+#define RADIO_TX_DS           (1 << 5)      // data sent on TX; write 1 to clear bit
+#define RADIO_MAX_RT          (1 << 4)      // maximum tx retransmits interrupt; write 1 to clear
+#define RADIO_RX_P_NO_MASK    (0x7 << 1)    // rx pipe ready for rx_fifo: 0-5=pipe #; 6=unused; 7=rx fifo empty
+#define RADIO_RX_P_NO_OFFS    1             // offset for rx pipe #
+#define RADIO_TX_FULL         (1 << 0)      // 1=tx full; 0=available locations in tx fifo
 
 #define RADIO_OBSERVE_TX  0x08
 #define RADIO_OBSERVE_TXPLOS_CNT_MASK 0xF0  // count lost packets
@@ -210,8 +213,18 @@
 #define RADIO_FIFO_RX_FULL    (1 << 1)      // 1=rx fifo full; 0=locations in rx fifo available
 #define RADIO_FIFO_RX_EMPTY   (1 << 0)      // 1=rx fifo empty; 0=data in rx fifo
 
-#define RADIO_DYNPD       0x1C          // requires en_dpl and enaa_p0
-#define RADIO_FEATURE     0x1D
+#define RADIO_DYNPD               0x1C        // dynamic packet payload; requires en_dpl and enaa_p0
+#define RADIO_DYNPD_DPL_P5        (1 << 5)    // pipe 5
+#define RADIO_DYNPD_DPL_P4        (1 << 4)    // pipe 4
+#define RADIO_DYNPD_DPL_P3        (1 << 3)    // pipe 3
+#define RADIO_DYNPD_DPL_P2        (1 << 2)    // pipe 2
+#define RADIO_DYNPD_DPL_P1        (1 << 1)    // pipe 1
+#define RADIO_DYNPD_DPL_P0        (1 << 0)    // pipe 0
+
+#define RADIO_FEATURE               0x1D
+#define RADIO_FEATURE_EN_DPL        (1 << 2)   // enable dynamic payload length
+#define RADIO_FEATURE_EN_ACK_PAY    (1 << 1)   // enable payload with ack; dynamic payload length must be en on pipe 0 ptx/prx
+#define RADIO_FEATURE_EN_DYN_ACK    (1 << 0)   // enable W_TX_PAYLOAD_NOACK command
 
 void rcc_enable_gpio(uint32_t gpios);
 void rcc_enable_spi(void);
@@ -235,9 +248,13 @@ void radio_configure(void);
 void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size);
 uint8_t radio_get_erx_pipes(void);
 
+uint8_t radio_rx_waiting(void);
+void radio_recv(volatile uint8_t *data);
+
 int main(void)
 {
   init();
+  uint32_t data = 0;
 
   enable_gpio(GPIO_A, GPIO_0);      // slave select
   enable_gpio(GPIO_A, GPIO_1);      // chip enable
@@ -247,23 +264,17 @@ int main(void)
   while (1) 
   {
     uint32_t i = 0;
+    data = 0;
 
-    for (i = 0; i < 1000000; i++) 
+    for (i = 0; i < 5000000; i++) 
     {
       __asm__("nop");
     }
 
-    uint8_t data = 0;
-    radio_spi_transfer((RADIO_R_REGISTER | RADIO_CONFIG), &data, 1);
-    if (data)
-    {}
-    //spi_send(RADIO_W_REGISTER | RADIO_CONFIG
-    // data[0] = 2;
-    // spi_send2(RADIO_W_REGISTER, data, 1);
-//    spi_send2(RADIO_R_REGISTER, data, 1);
-//
-//    data[0] = 0;
-//    spi_send2(RADIO_R_REGISTER, data, 1);
+    if (radio_rx_waiting() != 0x7)
+    {
+      radio_recv((uint8_t *)&data);
+    }
   }
 
   return 0;
@@ -381,7 +392,6 @@ void spi_send2(uint8_t *data, size_t size)
   uint32_t recv_data;
 
   disable_gpio(GPIO_A, GPIO_0);     // CSN
-//  disable_gpio(GPIO_A, GPIO_1);     // CE
 
   // wait until transfer finished, send command
   while (!(*spi_status_register & SPI_SR_TXE));
@@ -475,23 +485,86 @@ void radio_configure(void)
 {
   volatile uint8_t data[2];
 
-  // power on, ignore all interrupts
-  data[0] = (RADIO_W_REGISTER | RADIO_CONFIG);
-  data[1] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_RX_RT | RADIO_MASK_MAX_RT);
-  spi_transmit(data, sizeof(data));
-
   // channel to use
   data[0] = (RADIO_W_REGISTER | RADIO_RF_CH);
-  data[1] = (0);
+  data[1] = (100);
   spi_transmit(data, sizeof(data));
   
   // radio rf power/rate
   data[0] = (RADIO_W_REGISTER | RADIO_RF_SETUP);
-  data[1] = (RADIO_RF_PWR_MASK);      // 0dBm
+  data[1] = (RADIO_RF_PWR_MASK | RADIO_RF_DR_MASK);      // 0dBm, 2mbps
   spi_transmit(data, sizeof(data));
   
+  // radio auto-retransmit retries / time between retries
+  data[0] = (RADIO_W_REGISTER | RADIO_SETUP_RETR);
+  data[1] = ((1 << RADIO_SETUP_RETR_ARD_OFFS) | RADIO_SETUP_RETR_ARC_MASK);      // 500uS between retries | 15 retries
+  spi_transmit(data, sizeof(data));
+  
+  // address
   uint8_t address[5] = {1, 2, 3, 4, 0};
   radio_spi_transfer((RADIO_W_REGISTER | RADIO_ADDR_P1), address, sizeof(address));
+
+  // enable dynamic payload length on pipe 0/1
+  data[0] = (RADIO_DYNPD_DPL_P0 | RADIO_DYNPD_DPL_P1);
+  radio_spi_transfer((RADIO_W_REGISTER | RADIO_DYNPD), data, 1);
+
+  // enable auto acknowledge pipe 0/1
+//  data[0] = (RADIO_EN_AA_P0 | RADIO_EN_AA_P1);
+//  radio_spi_transfer((RADIO_W_REGISTER | RADIO_EN_AA), data, 1);
+
+  // enable ack payload
+  data[0] = (RADIO_FEATURE_EN_DYN_ACK | RADIO_FEATURE_EN_ACK_PAY | RADIO_FEATURE_EN_DPL);
+  radio_spi_transfer((RADIO_W_REGISTER | RADIO_FEATURE), data, 1);
+
+  // flush rx FIFO
+  radio_spi_transfer((RADIO_FLUSH_RX), NULL, 0);
+
+  // flush tx FIFO
+  radio_spi_transfer((RADIO_FLUSH_TX), NULL, 0);
+  
+  // clear interrupts
+  uint8_t currentStatus = 0;
+  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &currentStatus, 1);
+  currentStatus |= (RADIO_RX_DR | RADIO_TX_DS | RADIO_MAX_RT);
+  radio_spi_transfer((RADIO_W_REGISTER | RADIO_STATUS), &currentStatus, 1);
+
+  // power on, ignore all interrupts
+  data[0] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_RX_RT | RADIO_MASK_MAX_RT);
+  radio_spi_transfer((RADIO_W_REGISTER | RADIO_CONFIG), data, 1);
+
+  // chip enable
+  enable_gpio(GPIO_A, GPIO_1);     // CE
+}
+
+// get pipe with rx waiting to be read
+uint8_t radio_rx_waiting(void)
+{
+  uint8_t pipeRxWaiting = 0;
+  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &pipeRxWaiting, 1);
+  pipeRxWaiting = ((pipeRxWaiting & RADIO_RX_P_NO_MASK) >> RADIO_RX_P_NO_OFFS);
+
+  return pipeRxWaiting;
+}
+
+// data max len must not be < 4 bytes
+void radio_recv(volatile uint8_t *data)
+{
+  // Determine length of data in the RX FIFO buffer and read it.
+  uint8_t dataLength = 0;
+  radio_spi_transfer(RADIO_R_RX_PL_WID, &dataLength, 1);
+
+  if (dataLength > 4)
+  {
+    dataLength = 4;
+  }
+
+//  radio_spi_transfer(RADIO_R_RX_PAYLOAD, data, dataLength);
+//  
+//  // clear data received flag
+//  uint8_t currentStatus = 0;
+//  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &currentStatus, 1);
+//  currentStatus |= RADIO_RX_DR;
+//  radio_spi_transfer((RADIO_W_REGISTER | RADIO_STATUS), &currentStatus, 1);
 }
 
 void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size)
@@ -537,7 +610,7 @@ void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size)
     while (!(*spi_status_register & SPI_SR_TXE));
 
     // if rx not empty, replace data buffer with response
-    while ((*spi_status_register & SPI_SR_RXNE))
+    if ((*spi_status_register & SPI_SR_RXNE))
     {
       data[currentByte] = *spi_data_register;
     }

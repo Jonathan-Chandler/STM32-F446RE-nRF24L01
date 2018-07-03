@@ -1,0 +1,542 @@
+Archive member included to satisfy reference by file (symbol)
+
+/usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                              (reset_handler)
+
+Discarded input sections
+
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .group         0x0000000000000000        0xc nRF24L01.o
+ .text          0x0000000000000000        0x0 nRF24L01.o
+ .data          0x0000000000000000        0x0 nRF24L01.o
+ .bss           0x0000000000000000        0x0 nRF24L01.o
+ .text.enable_gpio
+                0x0000000000000000        0xe nRF24L01.o
+ .text.disable_gpio
+                0x0000000000000000       0x10 nRF24L01.o
+ .text.toggle_gpio
+                0x0000000000000000       0x12 nRF24L01.o
+ .text.spi_send
+                0x0000000000000000       0x2c nRF24L01.o
+ .text.spi_send2
+                0x0000000000000000       0x74 nRF24L01.o
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .group         0x0000000000000000        0xc /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000000000      0xa90 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000000000       0x22 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000000000       0xef /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000000000       0x6a /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000000000      0x1df /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom              0x0000000008000000 0x0000000000100000 xr
+ram              0x0000000020000000 0x0000000000020000 xrw
+ccm              0x0000000010000000 0x0000000000010000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD nRF24L01.o
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a
+START GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/thumb/v7e-m+fp/hard/libgcc.a
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a
+END GROUP
+START GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/thumb/v7e-m+fp/hard/libgcc.a
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg.a
+LOAD /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a
+END GROUP
+
+.text           0x0000000008000000      0x55c
+ *(.vectors)
+ .vectors       0x0000000008000000      0x1ac /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                0x0000000008000000                vector_table
+ *(.text*)
+ .text.rcc_enable_gpio
+                0x00000000080001ac       0x10 nRF24L01.o
+                0x00000000080001ac                rcc_enable_gpio
+ .text.rcc_enable_spi
+                0x00000000080001bc       0x10 nRF24L01.o
+                0x00000000080001bc                rcc_enable_spi
+ .text.configure_gpio
+                0x00000000080001cc       0x16 nRF24L01.o
+                0x00000000080001cc                configure_gpio
+ *fill*         0x00000000080001e2        0x2 
+ .text.configure_spi
+                0x00000000080001e4       0x78 nRF24L01.o
+                0x00000000080001e4                configure_spi
+ .text.init     0x000000000800025c       0x30 nRF24L01.o
+                0x000000000800025c                init
+ .text.spi_transmit
+                0x000000000800028c       0x68 nRF24L01.o
+                0x000000000800028c                spi_transmit
+ .text.radio_spi_transfer
+                0x00000000080002f4       0x78 nRF24L01.o
+                0x00000000080002f4                radio_spi_transfer
+ .text.radio_configure
+                0x000000000800036c       0xd8 nRF24L01.o
+                0x000000000800036c                radio_configure
+ .text.radio_rx_waiting
+                0x0000000008000444       0x22 nRF24L01.o
+                0x0000000008000444                radio_rx_waiting
+ .text.radio_recv
+                0x0000000008000466       0x1a nRF24L01.o
+                0x0000000008000466                radio_recv
+ .text.startup.main
+                0x0000000008000480       0x3c nRF24L01.o
+                0x0000000008000480                main
+ .text.blocking_handler
+                0x00000000080004bc        0x2 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                0x00000000080004bc                dma2_stream1_isr
+                0x00000000080004bc                tim8_brk_tim12_isr
+                0x00000000080004bc                dma1_stream7_isr
+                0x00000000080004bc                usart3_isr
+                0x00000000080004bc                tim7_isr
+                0x00000000080004bc                dma2d_isr
+                0x00000000080004bc                uart8_isr
+                0x00000000080004bc                dma1_stream2_isr
+                0x00000000080004bc                otg_hs_isr
+                0x00000000080004bc                blocking_handler
+                0x00000000080004bc                tim5_isr
+                0x00000000080004bc                rtc_wkup_isr
+                0x00000000080004bc                otg_fs_isr
+                0x00000000080004bc                spi1_isr
+                0x00000000080004bc                i2c3_er_isr
+                0x00000000080004bc                exti2_isr
+                0x00000000080004bc                spi5_isr
+                0x00000000080004bc                usb_fs_wkup_isr
+                0x00000000080004bc                tamp_stamp_isr
+                0x00000000080004bc                can1_rx1_isr
+                0x00000000080004bc                dma2_stream0_isr
+                0x00000000080004bc                usart1_isr
+                0x00000000080004bc                i2c3_ev_isr
+                0x00000000080004bc                usage_fault_handler
+                0x00000000080004bc                can2_rx0_isr
+                0x00000000080004bc                dma1_stream6_isr
+                0x00000000080004bc                can2_rx1_isr
+                0x00000000080004bc                can1_sce_isr
+                0x00000000080004bc                tim1_cc_isr
+                0x00000000080004bc                can1_tx_isr
+                0x00000000080004bc                tim1_up_tim10_isr
+                0x00000000080004bc                sdio_isr
+                0x00000000080004bc                eth_isr
+                0x00000000080004bc                spi6_isr
+                0x00000000080004bc                dma2_stream5_isr
+                0x00000000080004bc                pvd_isr
+                0x00000000080004bc                can1_rx0_isr
+                0x00000000080004bc                rcc_isr
+                0x00000000080004bc                dma2_stream3_isr
+                0x00000000080004bc                flash_isr
+                0x00000000080004bc                uart4_isr
+                0x00000000080004bc                lcd_tft_isr
+                0x00000000080004bc                rtc_alarm_isr
+                0x00000000080004bc                exti15_10_isr
+                0x00000000080004bc                hash_rng_isr
+                0x00000000080004bc                tim1_trg_com_tim11_isr
+                0x00000000080004bc                hard_fault_handler
+                0x00000000080004bc                exti1_isr
+                0x00000000080004bc                i2c1_ev_isr
+                0x00000000080004bc                usart6_isr
+                0x00000000080004bc                spi2_isr
+                0x00000000080004bc                cryp_isr
+                0x00000000080004bc                nvic_wwdg_isr
+                0x00000000080004bc                dma1_stream1_isr
+                0x00000000080004bc                dma2_stream4_isr
+                0x00000000080004bc                exti3_isr
+                0x00000000080004bc                tim3_isr
+                0x00000000080004bc                usart2_isr
+                0x00000000080004bc                sai1_isr
+                0x00000000080004bc                fpu_isr
+                0x00000000080004bc                dma1_stream4_isr
+                0x00000000080004bc                i2c2_er_isr
+                0x00000000080004bc                i2c2_ev_isr
+                0x00000000080004bc                uart5_isr
+                0x00000000080004bc                dma2_stream6_isr
+                0x00000000080004bc                spi4_isr
+                0x00000000080004bc                adc_isr
+                0x00000000080004bc                dma2_stream7_isr
+                0x00000000080004bc                tim8_up_tim13_isr
+                0x00000000080004bc                fsmc_isr
+                0x00000000080004bc                exti4_isr
+                0x00000000080004bc                tim6_dac_isr
+                0x00000000080004bc                dma1_stream3_isr
+                0x00000000080004bc                tim8_trg_com_tim14_isr
+                0x00000000080004bc                mem_manage_handler
+                0x00000000080004bc                lcd_tft_err_isr
+                0x00000000080004bc                can2_tx_isr
+                0x00000000080004bc                exti9_5_isr
+                0x00000000080004bc                tim1_brk_tim9_isr
+                0x00000000080004bc                uart7_isr
+                0x00000000080004bc                can2_sce_isr
+                0x00000000080004bc                tim4_isr
+                0x00000000080004bc                otg_hs_wkup_isr
+                0x00000000080004bc                i2c1_er_isr
+                0x00000000080004bc                dma1_stream0_isr
+                0x00000000080004bc                tim8_cc_isr
+                0x00000000080004bc                dcmi_isr
+                0x00000000080004bc                dma2_stream2_isr
+                0x00000000080004bc                eth_wkup_isr
+                0x00000000080004bc                bus_fault_handler
+                0x00000000080004bc                otg_hs_ep1_out_isr
+                0x00000000080004bc                spi3_isr
+                0x00000000080004bc                dma1_stream5_isr
+                0x00000000080004bc                otg_hs_ep1_in_isr
+                0x00000000080004bc                tim2_isr
+                0x00000000080004bc                exti0_isr
+ .text.null_handler
+                0x00000000080004be        0x2 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                0x00000000080004be                null_handler
+                0x00000000080004be                sv_call_handler
+                0x00000000080004be                pend_sv_handler
+                0x00000000080004be                debug_monitor_handler
+                0x00000000080004be                sys_tick_handler
+                0x00000000080004be                nmi_handler
+ .text.reset_handler
+                0x00000000080004c0       0x94 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                0x00000000080004c0                reset_handler
+                0x0000000008000554                . = ALIGN (0x4)
+ *(.rodata*)
+ .rodata        0x0000000008000554        0x5 nRF24L01.o
+                0x000000000800055c                . = ALIGN (0x4)
+ *fill*         0x0000000008000559        0x3 
+
+.glue_7         0x000000000800055c        0x0
+ .glue_7        0x000000000800055c        0x0 linker stubs
+
+.glue_7t        0x000000000800055c        0x0
+ .glue_7t       0x000000000800055c        0x0 linker stubs
+
+.vfp11_veneer   0x000000000800055c        0x0
+ .vfp11_veneer  0x000000000800055c        0x0 linker stubs
+
+.v4_bx          0x000000000800055c        0x0
+ .v4_bx         0x000000000800055c        0x0 linker stubs
+
+.iplt           0x000000000800055c        0x0
+ .iplt          0x000000000800055c        0x0 nRF24L01.o
+
+.rel.dyn        0x000000000800055c        0x0
+ .rel.iplt      0x000000000800055c        0x0 nRF24L01.o
+
+.preinit_array  0x000000000800055c        0x0
+                0x000000000800055c                . = ALIGN (0x4)
+                0x000000000800055c                __preinit_array_start = .
+ *(.preinit_array)
+                0x000000000800055c                __preinit_array_end = .
+
+.init_array     0x000000000800055c        0x0
+                0x000000000800055c                . = ALIGN (0x4)
+                0x000000000800055c                __init_array_start = .
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array)
+                0x000000000800055c                __init_array_end = .
+
+.fini_array     0x000000000800055c        0x0
+                0x000000000800055c                . = ALIGN (0x4)
+                0x000000000800055c                __fini_array_start = .
+ *(.fini_array)
+ *(SORT_BY_NAME(.fini_array.*))
+                0x000000000800055c                __fini_array_end = .
+
+.ARM.extab
+ *(.ARM.extab*)
+
+.ARM.exidx      0x000000000800055c        0x0
+                0x000000000800055c                __exidx_start = .
+ *(.ARM.exidx*)
+                0x000000000800055c                __exidx_end = .
+                0x000000000800055c                . = ALIGN (0x4)
+                0x000000000800055c                _etext = .
+
+.data           0x0000000020000000        0x0 load address 0x000000000800055c
+                0x0000000020000000                _data = .
+ *(.data*)
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                _edata = .
+                0x000000000800055c                _data_loadaddr = LOADADDR (.data)
+
+.igot.plt       0x0000000020000000        0x0 load address 0x000000000800055c
+ .igot.plt      0x0000000020000000        0x0 nRF24L01.o
+
+.bss            0x0000000020000000        0x0 load address 0x000000000800055c
+ *(.bss*)
+ *(COMMON)
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                _ebss = .
+
+/DISCARD/
+ *(.eh_frame)
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                end = .
+                0x0000000020020000                PROVIDE (_stack = (ORIGIN (ram) + LENGTH (ram)))
+OUTPUT(nRF24L01.elf elf32-littlearm)
+
+.debug_info     0x0000000000000000     0x1a2b
+ .debug_info    0x0000000000000000     0x1739 nRF24L01.o
+ .debug_info    0x0000000000001739      0x2f2 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_abbrev   0x0000000000000000      0x59c
+ .debug_abbrev  0x0000000000000000      0x441 nRF24L01.o
+ .debug_abbrev  0x0000000000000441      0x15b /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_loc      0x0000000000000000      0x8ee
+ .debug_loc     0x0000000000000000      0x7ef nRF24L01.o
+ .debug_loc     0x00000000000007ef       0xff /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_aranges  0x0000000000000000       0xc8
+ .debug_aranges
+                0x0000000000000000       0x98 nRF24L01.o
+ .debug_aranges
+                0x0000000000000098       0x30 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_ranges   0x0000000000000000      0x1e0
+ .debug_ranges  0x0000000000000000      0x1c0 nRF24L01.o
+ .debug_ranges  0x00000000000001c0       0x20 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_macro    0x0000000000000000     0x2fb1
+ .debug_macro   0x0000000000000000      0x640 nRF24L01.o
+ .debug_macro   0x0000000000000640      0xa90 nRF24L01.o
+ .debug_macro   0x00000000000010d0       0x10 nRF24L01.o
+ .debug_macro   0x00000000000010e0       0x22 nRF24L01.o
+ .debug_macro   0x0000000000001102       0x4c nRF24L01.o
+ .debug_macro   0x000000000000114e       0x18 nRF24L01.o
+ .debug_macro   0x0000000000001166       0x5c nRF24L01.o
+ .debug_macro   0x00000000000011c2       0x35 nRF24L01.o
+ .debug_macro   0x00000000000011f7       0x34 nRF24L01.o
+ .debug_macro   0x000000000000122b      0x16d nRF24L01.o
+ .debug_macro   0x0000000000001398       0x57 nRF24L01.o
+ .debug_macro   0x00000000000013ef       0x52 nRF24L01.o
+ .debug_macro   0x0000000000001441       0x1f nRF24L01.o
+ .debug_macro   0x0000000000001460       0x43 nRF24L01.o
+ .debug_macro   0x00000000000014a3       0x20 nRF24L01.o
+ .debug_macro   0x00000000000014c3      0x18e nRF24L01.o
+ .debug_macro   0x0000000000001651      0x23b nRF24L01.o
+ .debug_macro   0x000000000000188c       0xef nRF24L01.o
+ .debug_macro   0x000000000000197b       0x6a nRF24L01.o
+ .debug_macro   0x00000000000019e5      0x1df nRF24L01.o
+ .debug_macro   0x0000000000001bc4       0x16 nRF24L01.o
+ .debug_macro   0x0000000000001bda       0x35 nRF24L01.o
+ .debug_macro   0x0000000000001c0f      0x353 nRF24L01.o
+ .debug_macro   0x0000000000001f62       0x10 nRF24L01.o
+ .debug_macro   0x0000000000001f72       0x10 nRF24L01.o
+ .debug_macro   0x0000000000001f82       0xb6 nRF24L01.o
+ .debug_macro   0x0000000000002038       0x16 nRF24L01.o
+ .debug_macro   0x000000000000204e      0x129 nRF24L01.o
+ .debug_macro   0x0000000000002177       0x16 nRF24L01.o
+ .debug_macro   0x000000000000218d      0x4fe nRF24L01.o
+ .debug_macro   0x000000000000268b       0xd4 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x000000000000275f       0x58 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x00000000000027b7       0x56 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x000000000000280d       0x51 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x000000000000285e       0x22 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000002880       0xfa /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x000000000000297a      0x3a1 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000002d1b       0x6a /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+ .debug_macro   0x0000000000002d85      0x22c /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_line     0x0000000000000000      0xc44
+ .debug_line    0x0000000000000000      0x8c4 nRF24L01.o
+ .debug_line    0x00000000000008c4      0x380 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_str      0x0000000000000000     0xc443
+ .debug_str     0x0000000000000000     0x93dc nRF24L01.o
+                                       0x962d (size before relaxing)
+ .debug_str     0x00000000000093dc     0x3067 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+                                       0x6b65 (size before relaxing)
+
+.comment        0x0000000000000000       0x1d
+ .comment       0x0000000000000000       0x1d nRF24L01.o
+                                         0x1e (size before relaxing)
+ .comment       0x000000000000001d       0x1e /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.ARM.attributes
+                0x0000000000000000       0x34
+ .ARM.attributes
+                0x0000000000000000       0x34 nRF24L01.o
+ .ARM.attributes
+                0x0000000000000034       0x34 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+.debug_frame    0x0000000000000000      0x1c0
+ .debug_frame   0x0000000000000000      0x180 nRF24L01.o
+ .debug_frame   0x0000000000000180       0x40 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+
+Cross Reference Table
+
+Symbol                                            File
+__fini_array_end                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+__fini_array_start                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+__init_array_end                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+__init_array_start                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+__preinit_array_end                               /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+__preinit_array_start                             /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+_data                                             /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+_data_loadaddr                                    /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+_ebss                                             /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+_edata                                            /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+_stack                                            /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+adc_isr                                           /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+blocking_handler                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+bus_fault_handler                                 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can1_rx0_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can1_rx1_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can1_sce_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can1_tx_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can2_rx0_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can2_rx1_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can2_sce_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+can2_tx_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+configure_gpio                                    nRF24L01.o
+configure_spi                                     nRF24L01.o
+cryp_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dcmi_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+debug_monitor_handler                             /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+disable_gpio                                      nRF24L01.o
+dma1_stream0_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream1_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream2_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream3_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream4_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream5_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream6_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma1_stream7_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream0_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream1_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream2_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream3_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream4_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream5_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream6_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2_stream7_isr                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+dma2d_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+enable_gpio                                       nRF24L01.o
+eth_isr                                           /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+eth_wkup_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti0_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti15_10_isr                                     /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti1_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti2_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti3_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti4_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+exti9_5_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+flash_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+fpu_isr                                           /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+fsmc_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+hard_fault_handler                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+hash_rng_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c1_er_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c1_ev_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c2_er_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c2_ev_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c3_er_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+i2c3_ev_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+init                                              nRF24L01.o
+lcd_tft_err_isr                                   /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+lcd_tft_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+main                                              nRF24L01.o
+                                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+mem_manage_handler                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+nmi_handler                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+null_handler                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+nvic_wwdg_isr                                     /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+otg_fs_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+otg_hs_ep1_in_isr                                 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+otg_hs_ep1_out_isr                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+otg_hs_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+otg_hs_wkup_isr                                   /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+pend_sv_handler                                   /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+pvd_isr                                           /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+radio_configure                                   nRF24L01.o
+radio_recv                                        nRF24L01.o
+radio_rx_waiting                                  nRF24L01.o
+radio_spi_transfer                                nRF24L01.o
+rcc_enable_gpio                                   nRF24L01.o
+rcc_enable_spi                                    nRF24L01.o
+rcc_isr                                           /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+reset_handler                                     /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+rtc_alarm_isr                                     /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+rtc_wkup_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+sai1_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+sdio_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi1_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi2_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi3_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi4_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi5_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi6_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+spi_send                                          nRF24L01.o
+spi_send2                                         nRF24L01.o
+spi_transmit                                      nRF24L01.o
+sv_call_handler                                   /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+sys_tick_handler                                  /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tamp_stamp_isr                                    /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim1_brk_tim9_isr                                 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim1_cc_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim1_trg_com_tim11_isr                            /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim1_up_tim10_isr                                 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim2_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim3_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim4_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim5_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim6_dac_isr                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim7_isr                                          /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim8_brk_tim12_isr                                /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim8_cc_isr                                       /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim8_trg_com_tim14_isr                            /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+tim8_up_tim13_isr                                 /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+toggle_gpio                                       nRF24L01.o
+uart4_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+uart5_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+uart7_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+uart8_isr                                         /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usage_fault_handler                               /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usart1_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usart2_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usart3_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usart6_isr                                        /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+usb_fs_wkup_isr                                   /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
+vector_table                                      /usr/lib/gcc/arm-none-eabi/8.1.0/../../../../arm-none-eabi/lib/libopencm3_stm32f4.a(vector.o)
