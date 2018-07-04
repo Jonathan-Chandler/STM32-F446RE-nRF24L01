@@ -17,6 +17,8 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+OBJS = gpio.o spi.o radio.o rcc.o
+
 BINARY = nRF24L01
 
 LDSCRIPT = ../libopencm3/lib/stm32/f4/stm32f405x6.ld
