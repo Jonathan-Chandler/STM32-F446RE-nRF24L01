@@ -1,2 +1,2 @@
 make clean all
-make scratch.stlink-flash
+make nRF24L01.stlink-flash

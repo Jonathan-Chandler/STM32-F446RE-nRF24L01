@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <stdbool.h>
 
 // RCC
 #define RCC_BASE      0x40023800
@@ -112,6 +114,10 @@
 #define SPI_I2SCFGR   0x1C
 #define SPI_I2SPR     0x20
 
+// spi commands
+#define SPI_REGISTER_WRITE_ONLY 0
+#define SPI_REGISTER_READ_WRITE 1
+
 // SCK default LOW
 // commands for nRF24L01 (8 bit)
 #define RADIO_R_REGISTER            0x00    // read command/status registers; 1-5 data bytes; low 5 bits=register map
@@ -131,7 +137,7 @@
 // register map for nRF24L01 (8 bit)
 #define RADIO_CONFIG      0x00
 #define RADIO_MASK_RX_DR  (1 << 6)      // 1=ignore IRQ; 0=rx dr on low interrupt IRQ
-#define RADIO_MASK_RX_RT  (1 << 5)      // 1=ignore IRQ; 0=tx ds on low interrupt IRQ
+#define RADIO_MASK_TX_DS  (1 << 5)      // 1=ignore IRQ; 0=tx ds on low interrupt IRQ
 #define RADIO_MASK_MAX_RT (1 << 4)      // 1=ignore IRQ; 0=reflect MAX_RT active on low
 #define RADIO_EN_CRC      (1 << 3)      // enable CRC; forced if EN_AA is high
 #define RADIO_CRCO        (1 << 2)      // CRC encoding scheme: 0=1 byte, 1=2 bytes
@@ -177,7 +183,7 @@
 #define RADIO_RF_PWR_OFFS 1             // RF TX mode Power: 00 = -18dbm; 01=-12dbm; 10=-6dbm; 11=0dbm;
 
 #define RADIO_STATUS          0x07
-#define RADIO_RX_DR           (1 << 6)      // data ready on RX; write 1 to clear bit
+#define RADIO_RX_DR           (1 << 6)      // data ready on RX; write 1 to clear bit 0100 0000
 #define RADIO_TX_DS           (1 << 5)      // data sent on TX; write 1 to clear bit
 #define RADIO_MAX_RT          (1 << 4)      // maximum tx retransmits interrupt; write 1 to clear
 #define RADIO_RX_P_NO_MASK    (0x7 << 1)    // rx pipe ready for rx_fifo: 0-5=pipe #; 6=unused; 7=rx fifo empty
@@ -233,11 +239,6 @@ void configure_gpio(uint32_t gpio_group, uint32_t gpio_pin, uint32_t gpio_mode, 
 
 void configure_spi(void);
 
-void spi_send(uint16_t data);
-//void spi_send2(uint8_t command, uint8_t *data, size_t size);
-void spi_send2(uint8_t *data, size_t size);
-void spi_transmit(volatile uint8_t *data, size_t size);
-
 void init(void);
 
 void enable_gpio(uint32_t gpio_group, uint32_t gpio_id);
@@ -248,13 +249,16 @@ void radio_configure(void);
 void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size);
 uint8_t radio_get_erx_pipes(void);
 
+void spi_read_write(bool read, volatile uint8_t *data, size_t size);
+uint8_t spi_transfer(uint32_t *spi_register, uint8_t data);
+
 uint8_t radio_rx_waiting(void);
-void radio_recv(volatile uint8_t *data);
+void radio_recv(uint8_t *data);
 
 int main(void)
 {
   init();
-  uint32_t data = 0;
+  uint8_t data[50] = {0};
 
   enable_gpio(GPIO_A, GPIO_0);      // slave select
   enable_gpio(GPIO_A, GPIO_1);      // chip enable
@@ -264,7 +268,7 @@ int main(void)
   while (1) 
   {
     uint32_t i = 0;
-    data = 0;
+    memset(data, 0, sizeof(data));
 
     for (i = 0; i < 5000000; i++) 
     {
@@ -273,7 +277,7 @@ int main(void)
 
     if (radio_rx_waiting() != 0x7)
     {
-      radio_recv((uint8_t *)&data);
+      radio_recv(data);
     }
   }
 
@@ -370,167 +374,173 @@ void configure_spi(void)
   *spi_cr1_register |= SPI_CR1_SPE;
 }
 
-void spi_send(uint16_t data)
-{
-  uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
-  uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
-  uint32_t spi_status = *spi_status_register;
+// void spi_send(uint8_t data)
+// {
+//   uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
+//   uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
+//   uint32_t spi_status = *spi_status_register;
+// 
+//   disable_gpio(GPIO_A, GPIO_0);     // CSN
+// 
+//   /* Wait for transfer finished. */
+//   while (!(spi_status & SPI_SR_TXE));
+// 
+//   *spi_data_register = data;
+//   enable_gpio(GPIO_A, GPIO_0);     // CSN
+// }
+// 
+// void spi_send2(uint8_t *data, size_t size)
+// {
+//   volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
+//   volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
+//   uint32_t recv_data;
+// 
+//   disable_gpio(GPIO_A, GPIO_0);     // CSN
+// 
+//   // wait until transfer finished, send command
+//   while (!(*spi_status_register & SPI_SR_TXE));
+// 
+//   // if rx not empty, read until rx buffer is empty
+//   while ((*spi_status_register & SPI_SR_RXNE))
+//   {
+//     recv_data = *spi_data_register;
+//   }
+// 
+//   // wait until transfer finished, send data
+//   for (size_t currentByte = 0; currentByte < size; currentByte++)
+//   {
+//     // wait until tx empty
+//     while (!(*spi_status_register & SPI_SR_TXE));
+// 
+//     // if rx not empty, read until rx buffer is empty
+//     while ((*spi_status_register & SPI_SR_RXNE))
+//     {
+//       recv_data = *spi_data_register;
+//     }
+// 
+//     *spi_data_register = data[currentByte];
+//   }
+// 
+//   // wait until tx empty
+//   while (!(*spi_status_register & SPI_SR_TXE));
+// 
+//   // if rx not empty, read until rx buffer is empty
+//   while ((*spi_status_register & SPI_SR_RXNE))
+//   {
+//     //SPI_SR_BSY
+//     //1. Wait until RXNE=1 to receive the last data.
+//     //2. Wait until TXE=1 and then wait until BSY=0 before disabling the SPI.
+//     //3. Read received data.
+//     recv_data = *spi_data_register;
+//   }
+// 
+//   while ((*spi_status_register & SPI_SR_BSY));
+// 
+//   if (recv_data)
+//   {
+//   }
+//   enable_gpio(GPIO_A, GPIO_0);     // CSN
+// //  enable_gpio(GPIO_A, GPIO_1);     // CE
+// }
 
-  disable_gpio(GPIO_A, GPIO_0);     // CSN
-
-  /* Wait for transfer finished. */
-  while (!(spi_status & SPI_SR_TXE));
-
-  *spi_data_register = data;
-  enable_gpio(GPIO_A, GPIO_0);     // CSN
-}
-
-void spi_send2(uint8_t *data, size_t size)
-{
-  volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
-  volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
-  uint32_t recv_data;
-
-  disable_gpio(GPIO_A, GPIO_0);     // CSN
-
-  // wait until transfer finished, send command
-  while (!(*spi_status_register & SPI_SR_TXE));
-
-  // if rx not empty, read until rx buffer is empty
-  while ((*spi_status_register & SPI_SR_RXNE))
-  {
-    recv_data = *spi_data_register;
-  }
-
-  // wait until transfer finished, send data
-  for (size_t currentByte = 0; currentByte < size; currentByte++)
-  {
-    // wait until tx empty
-    while (!(*spi_status_register & SPI_SR_TXE));
-
-    // if rx not empty, read until rx buffer is empty
-    while ((*spi_status_register & SPI_SR_RXNE))
-    {
-      recv_data = *spi_data_register;
-    }
-
-    *spi_data_register = data[currentByte];
-  }
-
-  // wait until tx empty
-  while (!(*spi_status_register & SPI_SR_TXE));
-
-  // if rx not empty, read until rx buffer is empty
-  while ((*spi_status_register & SPI_SR_RXNE))
-  {
-    //SPI_SR_BSY
-    //1. Wait until RXNE=1 to receive the last data.
-    //2. Wait until TXE=1 and then wait until BSY=0 before disabling the SPI.
-    //3. Read received data.
-    recv_data = *spi_data_register;
-  }
-
-  while ((*spi_status_register & SPI_SR_BSY));
-
-  if (recv_data)
-  {
-  }
-  enable_gpio(GPIO_A, GPIO_0);     // CSN
-//  enable_gpio(GPIO_A, GPIO_1);     // CE
-}
-
-void spi_transmit(volatile uint8_t *data, size_t size)
-{
-  volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
-  volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
-
-  // wait until transfer finished, send command
-  while (!(*spi_status_register & SPI_SR_TXE));
-
-  // if rx not empty, read until rx buffer is empty
-  while ((*spi_status_register & SPI_SR_RXNE))
-  {
-    // discard
-    uint32_t recv_data = *spi_data_register;
-    if (recv_data)
-    {
-    }
-  }
-
-  disable_gpio(GPIO_A, GPIO_0);     // CSN
-
-  // wait until transfer finished, send data
-  for (size_t currentByte = 0; currentByte < size; currentByte++)
-  {
-    *spi_data_register = data[currentByte];
-
-    // wait until tx empty
-    while (!(*spi_status_register & SPI_SR_TXE));
-
-    // if rx not empty, replace data buffer with response
-    while ((*spi_status_register & SPI_SR_RXNE))
-    {
-      data[currentByte] = *spi_data_register;
-    }
-  }
-
-  while ((*spi_status_register & SPI_SR_BSY));
-
-  enable_gpio(GPIO_A, GPIO_0);     // CSN
-}
+//void spi_transmit(volatile uint8_t *data, size_t size)
+//{
+//  volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
+//  volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
+//
+//  // wait until transfer finished, send command
+//  while (!(*spi_status_register & SPI_SR_TXE));
+//
+//  // if rx not empty, read until rx buffer is empty
+//  while ((*spi_status_register & SPI_SR_RXNE))
+//  {
+//    // discard
+//    uint32_t recv_data = *spi_data_register;
+//    if (recv_data)
+//    {
+//    }
+//  }
+//
+//  disable_gpio(GPIO_A, GPIO_0);     // CSN
+//
+//  // wait until transfer finished, send data
+//  for (size_t currentByte = 0; currentByte < size; currentByte++)
+//  {
+//    *spi_data_register = data[currentByte];
+//
+//    // wait until tx empty
+//    while (!(*spi_status_register & SPI_SR_TXE));
+//
+//    // if rx not empty, replace data buffer with response
+//    while ((*spi_status_register & SPI_SR_RXNE))
+//    {
+//      data[currentByte] = *spi_data_register;
+//    }
+//  }
+//
+//  while ((*spi_status_register & SPI_SR_BSY));
+//
+//  enable_gpio(GPIO_A, GPIO_0);     // CSN
+//}
 
 // 0000 1110 0111 0011
 // 0E 73
 void radio_configure(void)
 {
-  volatile uint8_t data[2];
+  volatile uint8_t writeData[8];
 
-  // channel to use
-  data[0] = (RADIO_W_REGISTER | RADIO_RF_CH);
-  data[1] = (100);
-  spi_transmit(data, sizeof(data));
+  // channel to use (x25, 0x64)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_RF_CH);
+  writeData[1] = (100);
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
   
-  // radio rf power/rate
-  data[0] = (RADIO_W_REGISTER | RADIO_RF_SETUP);
-  data[1] = (RADIO_RF_PWR_MASK | RADIO_RF_DR_MASK);      // 0dBm, 2mbps
-  spi_transmit(data, sizeof(data));
+  // radio rf power/rate (0x26, 0x0E)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_RF_SETUP);
+  writeData[1] = (RADIO_RF_PWR_MASK | RADIO_RF_DR_MASK);      // 0dBm, 2mbps
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
   
-  // radio auto-retransmit retries / time between retries
-  data[0] = (RADIO_W_REGISTER | RADIO_SETUP_RETR);
-  data[1] = ((1 << RADIO_SETUP_RETR_ARD_OFFS) | RADIO_SETUP_RETR_ARC_MASK);      // 500uS between retries | 15 retries
-  spi_transmit(data, sizeof(data));
+  // radio auto-retransmit retries / time between retries (0x24, 0x1F)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_SETUP_RETR);
+  writeData[1] = ((1 << RADIO_SETUP_RETR_ARD_OFFS) | RADIO_SETUP_RETR_ARC_MASK);      // 500uS between retries | 15 retries
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
   
-  // address
-  uint8_t address[5] = {1, 2, 3, 4, 0};
-  radio_spi_transfer((RADIO_W_REGISTER | RADIO_ADDR_P1), address, sizeof(address));
+  // address (0x2B, 0x01, 0x02, 0x03, 0x04, 0x00)
+  uint8_t address[6] = {(RADIO_W_REGISTER | RADIO_ADDR_P1), 1, 2, 3, 4, 0};
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, address, sizeof(address));
 
-  // enable dynamic payload length on pipe 0/1
-  data[0] = (RADIO_DYNPD_DPL_P0 | RADIO_DYNPD_DPL_P1);
-  radio_spi_transfer((RADIO_W_REGISTER | RADIO_DYNPD), data, 1);
+  // enable dynamic payload length on pipe 0/1 (0x3C, 0x03)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_DYNPD);
+  writeData[1] = (RADIO_DYNPD_DPL_P0 | RADIO_DYNPD_DPL_P1);
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
 
   // enable auto acknowledge pipe 0/1
 //  data[0] = (RADIO_EN_AA_P0 | RADIO_EN_AA_P1);
 //  radio_spi_transfer((RADIO_W_REGISTER | RADIO_EN_AA), data, 1);
 
-  // enable ack payload
-  data[0] = (RADIO_FEATURE_EN_DYN_ACK | RADIO_FEATURE_EN_ACK_PAY | RADIO_FEATURE_EN_DPL);
-  radio_spi_transfer((RADIO_W_REGISTER | RADIO_FEATURE), data, 1);
+  // enable ack payload (0x3D, 0x07)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_FEATURE);
+  writeData[1] = (RADIO_FEATURE_EN_DYN_ACK | RADIO_FEATURE_EN_ACK_PAY | RADIO_FEATURE_EN_DPL);
+  spi_read_write((RADIO_W_REGISTER | RADIO_FEATURE), writeData, 2);
 
-  // flush rx FIFO
-  radio_spi_transfer((RADIO_FLUSH_RX), NULL, 0);
+  // flush rx FIFO (0xE2)
+  writeData[0] = RADIO_FLUSH_RX;
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 1);
 
-  // flush tx FIFO
-  radio_spi_transfer((RADIO_FLUSH_TX), NULL, 0);
+  // flush tx FIFO (0xE1)
+  writeData[0] = RADIO_FLUSH_TX;
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 1);
   
-  // clear interrupts
-  uint8_t currentStatus = 0;
-  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &currentStatus, 1);
-  currentStatus |= (RADIO_RX_DR | RADIO_TX_DS | RADIO_MAX_RT);
-  radio_spi_transfer((RADIO_W_REGISTER | RADIO_STATUS), &currentStatus, 1);
+  // clear interrupts 
+  writeData[0] = (RADIO_R_REGISTER | RADIO_STATUS);
+  spi_read_write(SPI_REGISTER_READ_WRITE, writeData, 2); // (0x07, 0x?X)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_STATUS);
+  writeData[1] |= (RADIO_RX_DR | RADIO_TX_DS | RADIO_MAX_RT); // |= 0111 0000
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2); // (0x27, 0x7X) 
 
-  // power on, ignore all interrupts
-  data[0] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_RX_RT | RADIO_MASK_MAX_RT);
-  radio_spi_transfer((RADIO_W_REGISTER | RADIO_CONFIG), data, 1);
+  // power on, ignore all interrupts (0x20, 0x73)
+  writeData[0] = (RADIO_W_REGISTER | RADIO_CONFIG);
+  writeData[1] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_TX_DS | RADIO_MASK_MAX_RT);
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
 
   // chip enable
   enable_gpio(GPIO_A, GPIO_1);     // CE
@@ -539,85 +549,149 @@ void radio_configure(void)
 // get pipe with rx waiting to be read
 uint8_t radio_rx_waiting(void)
 {
-  uint8_t pipeRxWaiting = 0;
-  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &pipeRxWaiting, 1);
-  pipeRxWaiting = ((pipeRxWaiting & RADIO_RX_P_NO_MASK) >> RADIO_RX_P_NO_OFFS);
+  uint8_t rxWaitingBuffer[2] = {0};
+  rxWaitingBuffer[0] = (RADIO_R_REGISTER | RADIO_STATUS);
+  rxWaitingBuffer[1] = ((rxWaitingBuffer[1] & RADIO_RX_P_NO_MASK) >> RADIO_RX_P_NO_OFFS);
 
-  return pipeRxWaiting;
+  spi_read_write(SPI_REGISTER_READ_WRITE, rxWaitingBuffer, sizeof(rxWaitingBuffer));
+
+  return rxWaitingBuffer[1];
+}
+// boot
+// 0e 00
+// 0e 00
+// 0e 00
+// 0e c2 c2 c2 c2 c2
+// 0e 00
+// 0e 00
+// 0e
+// 0e
+// 0e
+// 0e
+// 0e 00
+// 0e 00
+
+// 0x07 - read status (get pipe with rx ready) - 2 bytes - 
+// 0x60 - get packet length - 2 bytes - 
+// 0x61 - receive payload - <= 5 bytes - 
+// 0x07 - read status - 2 bytes - 
+// 0x27 - write status - 2 bytes - 
+
+// Determine length of data in the RX FIFO buffer and read it.
+// data must have room for <= 32 bytes
+void radio_recv(uint8_t *data)
+{
+  uint8_t dataLength = 0;
+  volatile uint8_t dataBuffer[33] = {0}; // cmd byte + 32 bytes data
+
+  // read RX data length, will be returned in buffer[1]
+  dataBuffer[0] = RADIO_R_RX_PL_WID;
+  spi_read_write(SPI_REGISTER_READ_WRITE, dataBuffer, 2);
+
+  dataLength = dataBuffer[1];
+
+  // if data length is > 4 bytes, reset to 32 bytes
+  if (dataLength > 32)
+    dataLength = 32;
+
+  // read rx data from SPI 
+  dataBuffer[0] = RADIO_R_RX_PAYLOAD;
+  spi_read_write(SPI_REGISTER_READ_WRITE, dataBuffer, (dataLength + 1));
+
+  // copy returned data in buffer to data
+  for (size_t i = 0; i < dataLength; i++)
+  {
+    data[i] = dataBuffer[i+1];
+  }
+//  memcpy(data, &dataBuffer[1], dataLength);
+
+  // clear data received flag
+  // current status is returned in dataBuffer[1]
+  dataBuffer[0] = (RADIO_R_REGISTER | RADIO_STATUS);
+  spi_read_write(SPI_REGISTER_READ_WRITE, dataBuffer, 2);
+
+  // clear RX ready status by writing (current_status | RADIO_RX_DR) to status register
+  dataBuffer[0] = (RADIO_W_REGISTER | RADIO_STATUS);
+  dataBuffer[1] |= RADIO_RX_DR;
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, dataBuffer, 2);
 }
 
-// data max len must not be < 4 bytes
-void radio_recv(volatile uint8_t *data)
-{
-  // Determine length of data in the RX FIFO buffer and read it.
-  uint8_t dataLength = 0;
-  radio_spi_transfer(RADIO_R_RX_PL_WID, &dataLength, 1);
+// miso
+// 0x2, 0x2 - status=rdy pipe1
+// 0x2, 0x9 - payload width 9
+// 0x2, 0x1, 0x30 ; 0x2, 0x1, 0x0
+// 0x2, 0x2
+// 0x2, 0x0 - 
 
-  if (dataLength > 4)
+// mosi
+// 0x7, 0x0 - read status register
+// 0x60, 0x0 - read payload width
+// 0x61, 0x0, 0x0 - read payload bytes
+// 0x7, 0x0 - read stat register
+// 0x27, 0x42 - write stat register = RADIO_RX_DR | RX ready on pipe 1
+
+void spi_read_write(bool read, volatile uint8_t *data, size_t size)
+{
+  uint32_t *spi_register = (uint32_t *)SPI_1_BASE;
+  if (size == 0)
+    return;
+
+  disable_gpio(GPIO_A, GPIO_0);     // CSN
+
+  // send command byte
+  spi_transfer(spi_register, data[0]);
+
+  // send data bytes (LSB first)
+  for (size_t currentByte = 1; currentByte < size; currentByte++)
   {
-    dataLength = 4;
+    if (read)
+    {
+      // return read data
+      data[currentByte] = spi_transfer(spi_register, data[currentByte]);
+    }
+    else
+    {
+      // write only, do not read back
+      spi_transfer(spi_register, data[currentByte]);
+    }
   }
 
-//  radio_spi_transfer(RADIO_R_RX_PAYLOAD, data, dataLength);
-//  
-//  // clear data received flag
-//  uint8_t currentStatus = 0;
-//  radio_spi_transfer((RADIO_R_REGISTER | RADIO_STATUS), &currentStatus, 1);
-//  currentStatus |= RADIO_RX_DR;
-//  radio_spi_transfer((RADIO_W_REGISTER | RADIO_STATUS), &currentStatus, 1);
+  enable_gpio(GPIO_A, GPIO_0);     // CSN
 }
 
-void radio_spi_transfer(uint8_t command, volatile uint8_t *data, size_t size)
+uint8_t spi_transfer(uint32_t *spi_register, uint8_t data)
 {
   volatile uint32_t *spi_status_register = (uint32_t *)(SPI_1_BASE + SPI_SR);
   volatile uint32_t *spi_data_register = (uint32_t *)(SPI_1_BASE + SPI_DR);
+  if (*spi_register)
+  {
+  }
+  uint8_t recv_data = 0;
 
-  // wait until transfer finished, send command
+  // wait until previous transfer finished
   while (!(*spi_status_register & SPI_SR_TXE));
 
   // if rx not empty, read until rx buffer is empty
   while ((*spi_status_register & SPI_SR_RXNE))
   {
     // discard
-    uint32_t recv_data = *spi_data_register;
-    if (recv_data)
-    {
-    }
+    recv_data = *spi_data_register;
   }
 
-  disable_gpio(GPIO_A, GPIO_0);     // CSN
+  // send data
+  *spi_data_register = data;
 
-  // send command byte
-  *spi_data_register = command;
-
-  // wait until TX complete, discard contents of RX register
+  // wait until transfer finished
   while (!(*spi_status_register & SPI_SR_TXE));
+
+  // return data read
   while ((*spi_status_register & SPI_SR_RXNE))
   {
-    // discard response
-    uint32_t recv_data = *spi_data_register;
-    if (recv_data)
-    {
-    }
-  }
-
-  // send data bytes (LSB first)
-  for (size_t currentByte = 0; currentByte < size; currentByte++)
-  {
-    *spi_data_register = data[currentByte];
-
-    // wait until tx empty
-    while (!(*spi_status_register & SPI_SR_TXE));
-
-    // if rx not empty, replace data buffer with response
-    if ((*spi_status_register & SPI_SR_RXNE))
-    {
-      data[currentByte] = *spi_data_register;
-    }
+    recv_data = *spi_data_register;
   }
 
   while ((*spi_status_register & SPI_SR_BSY));
-
-  enable_gpio(GPIO_A, GPIO_0);     // CSN
+  // wait until transfer finished
+  return recv_data;
 }
 
