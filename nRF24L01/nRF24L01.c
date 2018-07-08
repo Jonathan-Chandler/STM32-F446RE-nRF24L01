@@ -7,6 +7,7 @@
 #include "gpio.h"
 #include "spi.h"
 #include "radio.h"
+#include <stdbool.h>
 
 #define USART_1_BASE  0x40011000
 #define USART_2_BASE  0x40004400
@@ -34,8 +35,6 @@
 #define USART_GTPR      0x18
 
 
-uint32_t *usart_cr1 = (uint32_t *)(USART_1_BASE + USART_CR1);
-*usart_cr1 |= USART_CR1_UE;
 
 // 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
 // 2. Program the M bit in USART_CR1 to define the word length.
@@ -53,10 +52,14 @@ uint32_t *usart_cr1 = (uint32_t *)(USART_1_BASE + USART_CR1);
 void init(void);
 void configure_usart(void);
 
+bool uart_tx_empty(void);
+void uart_tx(char data);
+
 int main(void)
 {
   init();
   uint8_t data[50] = {0};
+  char character = 'a';
 
   enable_gpio(GPIO_A, GPIO_0);      // slave select
   enable_gpio(GPIO_A, GPIO_1);      // chip enable
@@ -71,6 +74,11 @@ int main(void)
     for (i = 0; i < 5000000; i++) 
     {
       __asm__("nop");
+    }
+
+    if (uart_tx_empty())
+    {
+      uart_tx(character);
     }
 
     if (radio_rx_waiting() != 0x7)
@@ -88,27 +96,54 @@ void init(void)
   uint32_t enabled_spi = RCC_SPI_1_EN;
   rcc_enable_gpio(enabled_gpio);
   rcc_enable_spi(enabled_spi);
+  rcc_enable_uart();
 
   configure_gpio(GPIO_A, GPIO_0, GPIO_MODE_OUT, GPIO_PUPD_PULL);      // slave select
   configure_gpio(GPIO_A, GPIO_1, GPIO_MODE_OUT, GPIO_PUPD_PULL);      // chip enable
 
   configure_spi();
+  configure_usart();
 }
 
 void configure_usart(void)
 {
-  uint32_t *usart_cr1_register = (uint32_t *)(USART_1_BASE + USART_CR1);
-  uint32_t *usart_cr2_register = (uint32_t *)(USART_1_BASE + USART_CR2);
-  uint32_t *usart_cr3_register = (uint32_t *)(USART_1_BASE + USART_CR3);
-  uint32_t *gpio_afh_a_register = (uint32_t *)(GPIO_A + GPIO_AFRH);
+  volatile uint32_t *usart_cr1_register = (uint32_t *)(USART_1_BASE + USART_CR1);
+//  volatile uint32_t *usart_cr2_register = (uint32_t *)(USART_1_BASE + USART_CR2);
+//  volatile uint32_t *usart_cr3_register = (uint32_t *)(USART_1_BASE + USART_CR3);
+  volatile uint32_t *gpio_afh_a_register = (uint32_t *)(GPIO_A + GPIO_AFRH);
 
-  configure_gpio(GPIO_A, GPIO_9, GPIO_MODE_ALT, GPIO_PUPD_PULL);    // D12 = MISO
-  *gpio_afh_a_register |= (0x7 << 1*4);                                   // A6 = AF6 = SPI1_MISO
+  configure_gpio(GPIO_A, GPIO_9, GPIO_MODE_ALT, GPIO_PUPD_PULL);     // D12 = MISO
+  *gpio_afh_a_register |= (0x7 << 1*4);                              // A6 = AF6 = SPI1_MISO
   configure_gpio(GPIO_A, GPIO_10, GPIO_MODE_ALT, GPIO_PUPD_PULL);    // D13 = SCK
-  *gpio_afh_a_register |= (0x7 << 2*4);                                   // A5 = AF5 = SPI1_SCJ
+  *gpio_afh_a_register |= (0x7 << 2*4);                              // A5 = AF5 = SPI1_SCJ
   configure_gpio(GPIO_A, GPIO_11, GPIO_MODE_ALT, GPIO_PUPD_PULL);    // A2 = PA4 = CS
-  *gpio_afh_a_register |= (0x7 << 3*4);                                   // A5 = AF5 = SPI1_SCJ
+  *gpio_afh_a_register |= (0x7 << 3*4);                              // A5 = AF5 = SPI1_SCJ
   configure_gpio(GPIO_A, GPIO_12, GPIO_MODE_ALT, GPIO_PUPD_PULL);    // D11 = MOSI
-  *gpio_afh_a_register |= (0x7 << 5*4);                                   // A7 = AF7 = SPI1_MOSI
+  *gpio_afh_a_register |= (0x7 << 5*4);                              // A7 = AF7 = SPI1_MOSI
+
+  // p811 9.6KBps -> 9.598 KBps -> 104.1875 -> 0.2 err fpclk=16mhz
+  // DIV_fraction[3:0] in USART_BRR
+  // DIV_fraction[3:0] in USART_BRR
+  // Bits 15:4 DIV_Mantissa[11:0]: mantissa of USARTDIV
+  // These 12 bits define the mantissa of the USART Divider (USARTDIV)
+  // Bits 3:0 DIV_Fraction[3:0]: fraction of USARTDIV
+  // These 4 bits define the fraction of the USART Divider (USARTDIV). When OVER8=1, the
+  // DIV_Fraction3 bit is not considered and must be kept cleared.
+  *usart_cr1_register |= (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
 }
 
+void uart_tx(char data)
+{
+  volatile uint32_t *usart_data_register = (uint32_t *)(USART_1_BASE + USART_DR);
+
+  *usart_data_register = data;
+}
+
+bool uart_tx_empty(void)
+{
+  volatile uint32_t *usart_status_register = (uint32_t *)(USART_1_BASE + USART_SR);
+
+  if (*usart_status_register & USART_SR_TXE)
+    return true;
+  return false;
+}

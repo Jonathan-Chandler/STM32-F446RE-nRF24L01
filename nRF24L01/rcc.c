@@ -14,3 +14,10 @@ void rcc_enable_spi(uint32_t spis)
   *rcc_enable_offset |= spis;
 }
 
+void rcc_enable_uart(void)
+{
+  uint32_t *rcc_enable_offset = (uint32_t *)(RCC_BASE + RCC_APB2ENR);
+  
+  *rcc_enable_offset |= RCC_USART_1_EN;
+}
+
