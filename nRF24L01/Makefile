@@ -17,7 +17,7 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-OBJS = gpio.o spi.o radio.o rcc.o
+OBJS = gpio.o spi.o radio.o rcc.o usart.o
 
 BINARY = nRF24L01
 

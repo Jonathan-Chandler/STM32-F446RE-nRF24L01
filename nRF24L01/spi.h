@@ -19,7 +19,7 @@
 #define SPI_LSB_FIRST (1 << 7)
 #define SPI_CR1_SPE   (1 << 6)          // enable spi
 #define SPI_BAUD_OFFS 3                 // bits 5:3
-#define SPI_BAUD_MASK (0x7 << 3)        // 0x0=div 2; ...; 0x7 = div 256
+#define SPI_BAUD_MASK (0x7 << 3)        // 0x0=div 2; 0x1=div4; 0x2=div8; 0x3=div16; 0x4=div32; 0x5=div64; 0x6=div128; 0x7 = div 256
 #define SPI_MASTER    (1 << 2)
 #define SPI_CPOL_HIGH (1 << 1)          // clock idle high
 #define SPI_CPOL_LOW  (0 << 1)          // clock idle low

@@ -16,7 +16,7 @@ void configure_spi(void)
   configure_gpio(GPIO_A, GPIO_4, GPIO_MODE_ALT, GPIO_PUPD_PULL);    // A2 = PA4 = CS
   *gpio_afl_a_register |= (0x5 << 4*4);                                   // A5 = AF5 = SPI1_SCJ
 
-  *spi_cr1_register |= (SPI_MASTER | (0x4 << 3) | SPI_CR1_SSM | SPI_CR1_SSI);
+  *spi_cr1_register |= (SPI_MASTER | (0x4 << SPI_BAUD_OFFS) | SPI_CR1_SSM | SPI_CR1_SSI);
 
   *spi_cr2_register |= (SPI_CR2_SSOE);
 

@@ -13,6 +13,10 @@
 #define RCC_GPIO_G        (1 << 6)
 #define RCC_GPIO_H        (1 << 7)
 
+#define RCC_CFGR          0x8            // RCC clock configuration register
+#define RCC_PPRE2_MASK    (0x7 << 13)    // PPRE2: APB high-speed prescaler (APB2)
+#define RCC_PPRE2_OFFS    13             // 
+
 #define RCC_APB1ENR       0x40            
 #define RCC_SPI_2_EN      (1 << 14)
 #define RCC_SPI_3_EN      (1 << 15)
