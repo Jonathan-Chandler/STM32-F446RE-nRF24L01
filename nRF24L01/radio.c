@@ -62,6 +62,24 @@ void radio_configure(void)
   enable_gpio(GPIO_A, GPIO_1);     // CE
 }
 
+void radio_configure_tx(void)
+{
+  volatile uint8_t writeData[8];
+
+  // address (0x2B, 0x01, 0x02, 0x03, 0x04, 0x00)
+  // TX pipe address sets the destination radio for the data.
+  uint8_t address[6] = {(RADIO_W_REGISTER | RADIO_TX_ADDR), 1, 2, 3, 4, 0};
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, address, sizeof(address));
+
+  // RX pipe 0 needs the same address to receive ACK packets from the destination
+  address[0] = (RADIO_W_REGISTER | RADIO_ADDR_P0);
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, address, sizeof(address));
+
+  // power on, ignore all interrupts (0x20, 0x73), remove RADIO_PRIM_RX for transmit mode
+  writeData[0] = (RADIO_W_REGISTER | RADIO_CONFIG);
+  writeData[1] = (RADIO_PWR_UP | RADIO_MASK_RX_DR | RADIO_MASK_TX_DS | RADIO_MASK_MAX_RT);
+  spi_read_write(SPI_REGISTER_WRITE_ONLY, writeData, 2);
+}
 // get pipe with rx waiting to be read
 uint8_t radio_rx_waiting(void)
 {
@@ -110,5 +128,24 @@ void radio_recv(uint8_t *data)
   dataBuffer[0] = (RADIO_W_REGISTER | RADIO_STATUS);
   dataBuffer[1] |= RADIO_RX_DR;
   spi_read_write(SPI_REGISTER_WRITE_ONLY, dataBuffer, 2);
+}
+
+// send data in 32 byte sections
+void radio_send(uint8_t *data, size_t length)
+{
+  enable_gpio(GPIO_A, GPIO_1);     // Chip Enable
+
+  // transmit limited to 32 byte frames
+  for (size_t currentFrame = 0; currentFrame < length; currentFrame += 32)
+  {
+    size_t currentFrameSize = (length - currentFrame);
+
+    if (currentFrameSize > 32)
+      currentFrameSize = 32;
+
+    spi_read_write_command_data(SPI_REGISTER_WRITE_ONLY, RADIO_W_TX_PAYLOAD, &data[currentFrame], currentFrameSize);
+  }
+
+  enable_gpio(GPIO_A, GPIO_1);     // CE
 }
 

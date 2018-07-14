@@ -56,5 +56,6 @@ void configure_spi(void);
 
 void spi_read_write(bool read, volatile uint8_t *data, size_t size);
 uint8_t spi_transfer(uint32_t *spi_register, uint8_t data);
+void spi_read_write_command_data(bool read, uint8_t command, volatile uint8_t *data, size_t size);
 
 #endif

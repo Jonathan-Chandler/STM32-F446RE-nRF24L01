@@ -89,3 +89,30 @@ uint8_t spi_transfer(uint32_t *spi_register, uint8_t data)
   return recv_data;
 }
 
+void spi_read_write_command_data(bool read, uint8_t command, volatile uint8_t *data, size_t size)
+{
+  uint32_t *spi_register = (uint32_t *)SPI_1_BASE;
+  
+  disable_gpio(GPIO_A, GPIO_0);     // CSN
+
+  // send command byte
+  spi_transfer(spi_register, command);
+
+  // send data bytes (LSB first)
+  for (size_t currentByte = 0; currentByte < size; currentByte++)
+  {
+    if (read)
+    {
+      // write MOSI then return MISO data
+      data[currentByte] = spi_transfer(spi_register, data[currentByte]);
+    }
+    else
+    {
+      // write MOSI without reading MISO
+      spi_transfer(spi_register, data[currentByte]);
+    }
+  }
+
+  enable_gpio(GPIO_A, GPIO_0);     // CSN
+}
+

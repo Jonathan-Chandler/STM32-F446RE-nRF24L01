@@ -15,7 +15,7 @@
 #define RADIO_ACTIVATE              0x50    // use in power down/standby only
 #define RADIO_ACTIVATE_DATA         0x73    // R_RX_PL_WID + W_ACK_PAYLOAD + W_TX_PAYLOAD_NOACK
 #define RADIO_R_RX_PL_WID           0x60    // read rx payload width
-#define RADIO_W_ACK_PAYLOAD         0xA0    // low 3 bits = pipe to use; use in rx mode; transmit together with ack packet on pipe; max 3
+#define RADIO_W_TX_PAYLOAD          0xA0    // low 3 bits = pipe to use; use in rx mode; transmit together with ack packet on pipe; max 3
 #define RADIO_W_TX_PAYLOAD_NO_ACK   0xB0    // use in tx mode; disable autoack on this packet
 #define RADIO_NOP                   0xFF    // no operation, can read status register
 
@@ -117,7 +117,9 @@
 #define RADIO_FEATURE_EN_DYN_ACK    (1 << 0)   // enable W_TX_PAYLOAD_NOACK command
 
 void radio_configure(void);
+void radio_configure_tx(void);
 void radio_recv(uint8_t *data);
+void radio_send(uint8_t *data, size_t length);
 uint8_t radio_get_erx_pipes(void);
 uint8_t radio_rx_waiting(void);
 

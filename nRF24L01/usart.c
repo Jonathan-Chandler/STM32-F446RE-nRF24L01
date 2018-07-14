@@ -24,9 +24,28 @@ void configure_usart(void)
   *usart_brr_register = ((16000000 * 2) + 9600) / (2*9600);
 }
 
-void uart_tx(char data)
+void uart_tx_str(char *data)
+{
+  while (*data)
+  {
+    uart_tx_byte(*data);
+    data++;
+  }
+
+  // CR + LF
+  uart_tx_byte(10);
+  uart_tx_byte(13);
+}
+
+void uart_tx_byte(char data)
 {
   volatile uint32_t *usart_data_register = (uint32_t *)(USART_1_BASE + USART_DR);
+
+  // wait until tx buffer empty
+  while (!uart_tx_empty())
+  {
+    __asm__("nop");
+  }
 
   *usart_data_register = data;
 }

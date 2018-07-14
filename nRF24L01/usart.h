@@ -36,6 +36,8 @@
 void configure_usart(void);
 
 bool uart_tx_empty(void);
-void uart_tx(char data);
+
+void uart_tx_str(char *data);
+void uart_tx_byte(char data);
 
 #endif
