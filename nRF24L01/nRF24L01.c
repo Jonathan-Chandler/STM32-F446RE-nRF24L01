@@ -33,6 +33,63 @@ int main(void)
       __asm__("nop");
     }
 
+    // print on uart if rx data
+    radio_send((uint8_t *)sendData, sizeof(sendData));
+  }
+
+  return 0;
+}
+
+// main for TX side
+//{
+//  init();
+//  uint8_t data[50] = {0};
+//  char sendData[] = "aoeu";
+//
+//  enable_gpio(GPIO_A, GPIO_0);      // slave select
+//  enable_gpio(GPIO_A, GPIO_1);      // chip enable
+//
+//  radio_configure();
+//  radio_configure_tx();
+//
+//  while (1) 
+//  {
+//    uint32_t i = 0;
+//    memset(data, 0, sizeof(data));  // clear rx data
+//
+//    for (i = 0; i < 5000000; i++) 
+//    {
+//      __asm__("nop");
+//    }
+//
+//    // print on uart if rx data
+//    radio_send((uint8_t *)sendData, sizeof(sendData));
+//  }
+//
+//  return 0;
+//}
+
+
+// main for RX side
+//{
+//  init();
+//  uint8_t data[50] = {0};
+//
+//  enable_gpio(GPIO_A, GPIO_0);      // slave select
+//  enable_gpio(GPIO_A, GPIO_1);      // chip enable
+//
+//  radio_configure();
+//
+//  while (1) 
+//  {
+//    uint32_t i = 0;
+//    memset(data, 0, sizeof(data));  // clear rx data
+//
+//    for (i = 0; i < 5000000; i++) 
+//    {
+//      __asm__("nop");
+//    }
+//
 //    // if rx data waiting, copy radio rx data to data buffer
 //    if (radio_rx_waiting() != 0x7)
 //    {
@@ -44,13 +101,11 @@ int main(void)
 //    {
 //      uart_tx_str((char*)data);
 //    }
-
-    // print on uart if rx data
-    radio_send((uint8_t *)sendData, sizeof(sendData));
-  }
-
-  return 0;
-}
+//
+//  }
+//
+//  return 0;
+//}
 
 void init(void)
 {
