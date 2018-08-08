@@ -7,21 +7,28 @@ void radio_configure(void)
 {
   uint8_t write_buffer[6];
   uint8_t read_buffer[2];
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // channel to use (x25, 0x64)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_RF_CH);
   write_buffer[1] = 100;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // radio rf power/rate (0x26, 0x0E)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_RF_SETUP);
   write_buffer[1] = (RADIO_RF_PWR_MASK | RADIO_RF_DR_MASK);      // 0dBm, 2mbps
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
   
   // radio auto-retransmit retries / time between retries (0x24, 0x1F)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_SETUP_RETR);
   write_buffer[1] = ((1 << RADIO_SETUP_RETR_ARD_OFFS) | RADIO_SETUP_RETR_ARC_MASK);      // 500uS between retries | 15 retries
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
   
   // address (0x2B, 0x01, 0x02, 0x03, 0x04, 0x00)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_ADDR_P1);
@@ -30,12 +37,16 @@ void radio_configure(void)
   write_buffer[3] = 3;
   write_buffer[4] = 4;
   write_buffer[5] = 0;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, sizeof(write_buffer), 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // enable dynamic payload length on pipe 0/1 (0x3C, 0x03)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_DYNPD);
   write_buffer[1] = (RADIO_DYNPD_DPL_P0 | RADIO_DYNPD_DPL_P1);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // enable auto acknowledge pipe 0/1
   //  write_buffer[0] = (RADIO_W_REGISTER | RADIO_EN_AA);
@@ -45,30 +56,42 @@ void radio_configure(void)
   // enable ack payload (0x3D, 0x07)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_FEATURE);
   write_buffer[1] = (RADIO_FEATURE_EN_DYN_ACK | RADIO_FEATURE_EN_ACK_PAY | RADIO_FEATURE_EN_DPL);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // flush rx FIFO (0xE2)
   write_buffer[0] = RADIO_FLUSH_RX;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // flush tx FIFO (0xE1)
   write_buffer[0] = RADIO_FLUSH_TX;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
   
   // clear interrupts 
   write_buffer[0] = (RADIO_R_REGISTER | RADIO_STATUS);
   read_buffer[0] = 0;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(&hspi1, write_buffer, read_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_STATUS);
   write_buffer[1] = read_buffer[0];
   write_buffer[1] |= (RADIO_RX_DR | RADIO_TX_DS | RADIO_MAX_RT); // |= 0111 0000
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // power on, ignore all interrupts (0x20, 0x73)
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_CONFIG);
   write_buffer[1] = (RADIO_PWR_UP | RADIO_PRIM_RX | RADIO_MASK_RX_DR | RADIO_MASK_TX_DS | RADIO_MASK_MAX_RT);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // chip enable
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
@@ -97,7 +120,9 @@ uint8_t radio_rx_waiting(void)
   uint8_t write_buffer = (RADIO_R_REGISTER | RADIO_STATUS);
   uint8_t read_buffer = 0;
 
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(&hspi1, &write_buffer, &read_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   return read_buffer;
 }
@@ -112,7 +137,9 @@ void radio_recv(uint8_t *data)
 
   // read RX data length, will be returned in buffer[1]
   write_buffer[0] = RADIO_R_RX_PL_WID;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(&hspi1, write_buffer, read_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   dataLength = read_buffer[0];
 
@@ -122,7 +149,9 @@ void radio_recv(uint8_t *data)
 
   // read rx data from SPI 
   write_buffer[0] = RADIO_R_RX_PAYLOAD;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(&hspi1, write_buffer, read_buffer, dataLength, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // copy returned data in buffer to data
   for (size_t i = 0; i < dataLength; i++)
@@ -132,12 +161,16 @@ void radio_recv(uint8_t *data)
 
   // read status data register to read_buffer[0]
   write_buffer[0] = (RADIO_R_REGISTER | RADIO_STATUS);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(&hspi1, write_buffer, read_buffer, 1, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 
   // clear RX ready status by writing (current_status | RADIO_RX_DR) to status register
   write_buffer[0] = (RADIO_W_REGISTER | RADIO_STATUS);
   write_buffer[1] = read_buffer[0] | (RADIO_RX_DR);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, write_buffer, 2, 1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 }
  
 // // send data in 32 byte sections
