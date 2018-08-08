@@ -1,6 +1,6 @@
 #ifndef INCLUDE_RADIO_H
 #define INCLUDE_RADIO_H
-// #include <string.h>
+#include <string.h>
 #include <stdint.h>
 // #include "stm32f4xx_hal_conf.h"
 // 
@@ -117,10 +117,10 @@
 #define RADIO_FEATURE_EN_DYN_ACK    (1 << 0)   // enable W_TX_PAYLOAD_NOACK command
 // 
 void radio_configure(void);
-// void radio_configure_tx(void);
+void radio_configure_tx(void);
 void radio_recv(uint8_t *data);
-// void radio_send(uint8_t *data, size_t length);
-// uint8_t radio_get_erx_pipes(void);
+void radio_send(uint8_t *data, size_t length);
+uint8_t radio_get_erx_pipes(void);
 uint8_t radio_rx_waiting(void);
 
 #endif

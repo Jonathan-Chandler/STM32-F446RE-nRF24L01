@@ -53,6 +53,8 @@
 #include "radio.h"
 #include <string.h>
 
+#define RX_ONLY
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -119,6 +121,10 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   radio_configure();
+  // tx 
+#ifndef RX_ONLY
+  radio_configure_tx();
+#endif
 
   /* USER CODE END 2 */
 
@@ -294,13 +300,38 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
+// tx default task
+//  init();
+//  uint8_t data[50] = {0};
+//  char sendData[] = "aoeu";
+//
+//  enable_gpio(GPIO_A, GPIO_0);      // slave select
+//  enable_gpio(GPIO_A, GPIO_1);      // chip enable
+//
+//  radio_configure();
+//  radio_configure_tx();
+//
+//  while (1) 
+//  {
+//    uint32_t i = 0;
+//    memset(data, 0, sizeof(data));  // clear rx data
+//
+//    for (i = 0; i < 5000000; i++) 
+//    {
+//      __asm__("nop");
+//    }
+//
+//    // print on uart if rx data
+//    radio_send((uint8_t *)sendData, sizeof(sendData));
+//  }
+
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
+#ifdef RX_ONLY
+  // do RX
   uint8_t data[50] = {0};
 
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
   for(;;)
   {
     uint32_t i = 0;
@@ -325,7 +356,26 @@ void StartDefaultTask(void const * argument)
 
     osDelay(1);
   }
-  /* USER CODE END 5 */ 
+#else
+  // do TX
+  char sendData[] = "aoeu";
+
+  /* Infinite loop */
+  for(;;)
+  {
+    uint32_t i = 0;
+
+    for (i = 0; i < 5000000; i++) 
+    {
+      __asm__("nop");
+    }
+
+    // print on uart if rx data
+    radio_send((uint8_t *)sendData, sizeof(sendData));
+
+    osDelay(1);
+  }
+#endif
 }
 
 /**
